@@ -242,16 +242,18 @@ void drv_generic_i2c_command(const unsigned char command, /*const */ unsigned ch
 }
 void drv_mcp23017_i2c_command(const unsigned char enable, const unsigned char command, const unsigned char data) {
 
-    info("mcp23017_i2c_command enable: 0x%x, command: 0x%x, data: 0x%x",enable, command, data);
-    
+    info("mcp23017 command 0x%x - data %x", command, data);
+
     i2c_mcp23017_out(0x13,data, datadev);
-    i2c_mcp23017_out(0x12,command, ctrldev);
     i2c_mcp23017_out(0x12,command | enable, ctrldev);
+    i2c_mcp23017_out(0x12,command, ctrldev);
+
+    //info("mcp23017_i2c_command enable: 0x%x, command: 0x%x, data: 0x%x",enable, command, data);
 }
 
 void i2c_mcp23017_out(const unsigned char reg, const unsigned char byte, int dev) {
 
-    info("%s: initializing I2C slave device 0x%x", Driver, dev);
+    //info("%s: initializing I2C slave device 0x%x", Driver, dev);
     if (ioctl(i2c_device, I2C_SLAVE, dev) < 0) {
         error("%s: error selecting slave device 0x%x\n", Driver, dev);
         return;
